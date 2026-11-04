@@ -53,7 +53,12 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 	}
 	defer c.mu.Unlock()
 
-	return c.entries[key].val, true
+	if c.entries[key].val != nil {
+		return c.entries[key].val, true
+	} else {
+		return nil, false
+	}
+
 }
 
 func (c *Cache) reaploop(t time.Time) {
@@ -61,11 +66,8 @@ func (c *Cache) reaploop(t time.Time) {
 	defer c.mu.Unlock()
 
 	for k, entry := range c.entries {
-		diff := t.Compare(entry.createdAt)
-		entry.createdAt.Local()
-		if diff >= int(c.interval) {
+		if t.Sub(entry.createdAt) >= c.interval {
 			c.entries[k] = CacheEntry{}
 		}
 	}
-
 }

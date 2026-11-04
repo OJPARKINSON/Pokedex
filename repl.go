@@ -18,6 +18,7 @@ type cliCommand struct {
 type config struct {
 	commands             map[string]cliCommand
 	pokeApiClient        *pokeapi.Client
+	params               []string
 	nextLocationsUrl     *string
 	previousLocationsUrl *string
 }
@@ -42,8 +43,13 @@ func startRepl(cfg *config) {
 
 		cleanedInput := cleanInput(input)
 
+		cfg.params = cleanedInput[1:]
+
 		if value, ok := cfg.commands[cleanedInput[0]]; ok {
 			value.callback(cfg)
+		} else {
+			fmt.Println("Could not find command")
+			cfg.commands["help"].callback(cfg)
 		}
 
 		if err := scanner.Err(); err != nil {
@@ -73,6 +79,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the previous list of locatons",
 			callback:    commandMapB,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explores a specific locaton",
+			callback:    commandExplore,
 		},
 	}
 }
