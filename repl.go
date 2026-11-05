@@ -21,6 +21,7 @@ type config struct {
 	params               []string
 	nextLocationsUrl     *string
 	previousLocationsUrl *string
+	userPokedex          map[string]pokeapi.Pokemon
 }
 
 func cleanInput(text string) []string {
@@ -84,6 +85,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "Explores a specific locaton",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Attempt to catch a pokemon",
+			callback:    commandCatch,
 		},
 	}
 }

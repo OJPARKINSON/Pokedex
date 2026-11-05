@@ -32,7 +32,8 @@ type Version struct {
 }
 
 type VersionDetails struct {
-	Rate    int     `json:"rate"`
+	Rate    int     `json:"rate,omitempty"`
+	Rarity  int     `json:"rarity,omitempty"`
 	Version Version `json:"version"`
 }
 
@@ -56,13 +57,13 @@ type Names struct {
 	Language Language `json:"language"`
 }
 
-type Pokemon struct {
+type PokemonShort struct {
 	Name string `json:"name"`
 	Url  string `json:"url"`
 }
 
 type PokemonEncounters struct {
-	Pokemon        Pokemon          `json:"pokemon"`
+	Pokemon        PokemonShort     `json:"pokemon"`
 	VersionDetails []VersionDetails `json:"version_details"`
 }
 
@@ -70,15 +71,15 @@ func (c *Client) Explore(locationArea string) ([]PokemonEncounters, error) {
 	url := fmt.Sprintf("%s/location-area/%s", baseURL, locationArea)
 
 	if data, ok := c.cache.Get(url); ok {
-		locationPoke := []PokemonEncounters{}
+		locationData := LocationArea{}
 
-		err := json.Unmarshal(data, &locationPoke)
+		err := json.Unmarshal(data, &locationData)
 		if err != nil {
 			fmt.Println(err)
 			return []PokemonEncounters{}, err
 		}
 
-		return locationPoke, err
+		return locationData.PokemonEncounters, err
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
