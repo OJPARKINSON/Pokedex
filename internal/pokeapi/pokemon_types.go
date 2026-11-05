@@ -1,9 +1,13 @@
 package pokeapi
 
 type Pokemon struct {
-	Id             int    `json:"id,omitempty"`
-	Name           string `json:"name,omitempty"`
-	BaseExperience int    `json:"base_experience,omitempty"`
+	Id             int     `json:"id,omitempty"`
+	Name           string  `json:"name,omitempty"`
+	BaseExperience int     `json:"base_experience,omitempty"`
+	Height         int     `json:"height,omitempty"`
+	Weight         int     `json:"weight,omitempty"`
+	Stats          []Stats `json:"stats,omitempty"`
+	Types          []Types `json:"types,omitempty"`
 }
 
 type PokemonResp struct {

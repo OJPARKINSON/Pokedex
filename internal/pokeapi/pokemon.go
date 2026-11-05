@@ -23,6 +23,10 @@ func (c *Client) GetPokemon(pokemon string) (Pokemon, error) {
 			Id:             pokemonResp.Id,
 			Name:           pokemonResp.Name,
 			BaseExperience: pokemonResp.BaseExperience,
+			Stats:          pokemonResp.Stats,
+			Height:         pokemonResp.Height,
+			Weight:         pokemonResp.Weight,
+			Types:          pokemonResp.Types,
 		}, err
 	}
 
